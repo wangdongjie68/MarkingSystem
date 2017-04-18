@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+<h1>Users</h1>
+<table border="1">
+    <tr>
+        <td>
+        </td>
+        <% users.forEach(function(user){ %>
+        <td><%= user %></td>
+        <% }) %>
+    </tr>
+
+    <% users.forEach(function(user,i){ %>
+    <tr>
+    <td><%= user %></td>
+
+    <% scores[i].forEach(function(score){ %>
+    <td><%= score %></td>
+    <% }) %>
+
+    </tr>
+    <% }) %>
+</table>
+    </body>
+</html>
