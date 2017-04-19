@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style type="text/css">
+            table{ display: inline;
+            border: 3px;
+            border-color: aqua}
+        </style>
     </head>
     <body>
 <h1>Users</h1>
-<table border="1">
+<table>
     <tr>
         <td>
+            互评
         </td>
         <% users.forEach(function(user){ %>
         <td><%= user %></td>
@@ -24,5 +30,21 @@
     </tr>
     <% }) %>
 </table>
+<table>
+    <tr>
+    <% statisticscoretitles.forEach(function(statisticscoretitle,i){ %>
+    <td><%= statisticscoretitle %></td>
+    <% }) %>
+    </tr>
+
+    <% statisticscores.forEach(function(statisticscore,i){ %>
+    <tr>
+         <% statisticscore.forEach(function(score){ %>
+         <td><%= score %></td>
+        <% }) %>
+    </tr>
+    <% }) %>
+</table>
+
     </body>
 </html>

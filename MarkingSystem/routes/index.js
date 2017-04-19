@@ -18,6 +18,7 @@ router.post('/marking.html', function(req, res, next) {
 });
 
 var users = ['陈博','陈民敬','陈天龙','程遥','邓启亮','付金祥','古意昌','李幸斌','吕毅','王东杰','许威','叶洪','张强','朱龙飞'];
+var statisticscoretitles = ['部分','平均分'];
 
 var scores = new Array;
 for(var i=0;i<users.length;i++){
@@ -27,48 +28,60 @@ for(var i=0;i<users.length;i++){
   }
 }
 
+var statisticscores = new Array;
+for(var i=0;i<users.length;i++){
+  statisticscores[i]=new Array();
+  for(var j=0;j<2;j++){
+    statisticscores[i][j]=0;
+  }
+}
+
 router.post('/statistics.html', function(req, res, next) {
   var index=users.indexOf(req.cookies.whoami);
   if(index!=-1){
-  scores[0][index]=req.body.chenbo;
-  scores[1][index]=req.body.chenminjing;
-  scores[2][index]=req.body.chentianlong;
-  scores[3][index]=req.body.chengyao;
-  scores[4][index]=req.body.dengqiliang;
-  scores[5][index]=req.body.fujinxiang;
-  scores[6][index]=req.body.guyichang;
-  scores[7][index]=req.body.lixingbin;
-  scores[8][index]=req.body.lvyi;
-  scores[9][index]=req.body.wangdongjie;
-  scores[10][index]=req.body.xuwei;
-  scores[11][index]=req.body.yehong;
-  scores[12][index]=req.body.zhangqiang;
-  scores[13][index]=req.body.zhulongfei;
-  }
+  scores[0][index]=CheckScore(req.body.chenbo);
+  scores[1][index]=CheckScore(req.body.chenminjing);
+  scores[2][index]=CheckScore(req.body.chentianlong);
+  scores[3][index]=CheckScore(req.body.chengyao);
+  scores[4][index]=CheckScore(req.body.dengqiliang);
+  scores[5][index]=CheckScore(req.body.fujinxiang);
+  scores[6][index]=CheckScore(req.body.guyichang);
+  scores[7][index]=CheckScore(req.body.lixingbin);
+  scores[8][index]=CheckScore(req.body.lvyi);
+  scores[9][index]=CheckScore(req.body.wangdongjie);
+  scores[10][index]=CheckScore(req.body.xuwei);
+  scores[11][index]=CheckScore(req.body.yehong);
+  scores[12][index]=CheckScore(req.body.zhangqiang);
+  scores[13][index]=CheckScore(req.body.zhulongfei);
+  Statistic();
+}
  res.render('statistics', {
         users: users,
         scores: scores,
+        statisticscores: statisticscores,
+        statisticscoretitles: statisticscoretitles,
     });
 });
 
-// router.post('/statistics.html', function(req, res, next) {
-//   console.log('Cookies:',req.cookies);
-//   global.chenbo=req.body.chenbo;
-//   global.chenminjing=req.body.chenminjing;
-//   global.chentianlong=req.body.chentianlong;
-//   global.chengyao=req.body.chengyao;
-//   global.dengqiliang=req.body.dengqiliang;
-//   global.fujinxiang=req.body.fujinxiang;
-//   global.guyichang=req.body.guyichang;
-//   global.lixingbin=req.body.lixingbin;
-//   global.lvyi=req.body.lvyi;
-//   global.wangdongjie=req.body.wangdongjie;
-//   global.xuwei=req.body.xuwei;
-//   global.yehong=req.body.yehong;
-//   global.zhangqiang=req.body.zhangqiang;
-//   global.zhulongfei=req.body.zhulongfei;
-//   res.render('statistics', { title: 'Express' });
-// });
+function CheckScore(score){
+  if(score=="") {
+    return 0;}
+    else{
+      return score;
+    }
+}
+
+function Statistic(){
+  var totle=0;
+  scores.forEach(function(everyonescore,i) {
+    everyonescore.forEach(function(score) {
+      totle+=(~~score);
+    }, this);
+    statisticscores[i][0]=totle;
+    statisticscores[i][1]=(totle/scores.length).toFixed(1);
+    totle=0;
+  }, this);
+}
 
 router.get('/statistics.html', function(req, res, next) {
  res.render('statistics', {
