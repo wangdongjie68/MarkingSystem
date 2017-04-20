@@ -55,12 +55,23 @@ router.post('/statistics.html', function(req, res, next) {
   scores[13][index]=CheckScore(req.body.zhulongfei);
   Statistic();
 }
+var a=CountFinishUser();
+if(a>=2){
  res.render('statistics', {
         users: users,
         scores: scores,
         statisticscores: statisticscores,
         statisticscoretitles: statisticscoretitles,
     });
+}
+else{
+res.render('submiting', {
+        users: users,
+        scores: scores,
+        statisticscores: statisticscores,
+        statisticscoretitles: statisticscoretitles,
+    });
+}
 });
 
 function CheckScore(score){
@@ -69,6 +80,16 @@ function CheckScore(score){
     else{
       return score;
     }
+}
+
+function CountFinishUser(){
+  var count=0;
+  scores[0].forEach(function(score,i) {
+    if(~~score > 10){
+      count++;
+    }
+  }, this);
+  return count;
 }
 
 function Statistic(){
@@ -84,10 +105,23 @@ function Statistic(){
 }
 
 router.get('/statistics.html', function(req, res, next) {
+var a=CountFinishUser();
+if(a>=2){
  res.render('statistics', {
         users: users,
         scores: scores,
+        statisticscores: statisticscores,
+        statisticscoretitles: statisticscoretitles,
     });
+}
+else{
+res.render('submiting', {
+        users: users,
+        scores: scores,
+        statisticscores: statisticscores,
+        statisticscoretitles: statisticscoretitles,
+    });
+}
 });
 
 module.exports = router;
