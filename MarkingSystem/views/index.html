@@ -10,20 +10,9 @@
         <form action="marking.html" method="POST">
             <p>请留下大名：
              <select name="whoami">
-              <option value="陈博">陈博</option>
-               <option value="陈民敬">陈民敬</option>
-               <option value="陈天龙">陈天龙</option>
-               <option value="程遥">程遥</option>
-               <option value="邓启亮">邓启亮</option>
-               <option value="付金祥">付金祥</option>
-               <option value="古意昌">古意昌</option>
-               <option value="李幸斌">李幸斌</option>
-               <option value="吕毅">吕毅</option>
-               <option value="王东杰">王东杰</option>
-               <option value="许威">许威</option>
-               <option value="叶洪">叶洪</option>
-               <option value="张强">张强</option>
-               <option value="朱龙飞">朱龙飞</option>
+                  <% users.forEach(function(user,i){ %>
+                    <option value="<%= usersen[i] %>"><%= user %></option>
+                    <% }) %>
              </select>
              <br>
              <br>

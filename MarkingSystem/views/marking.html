@@ -1,75 +1,98 @@
 <!-- This is the first html -->
 <html>
-    <head>
-        <style type="text/css">
-            span{width: 70;
-            display:inline-block;}
-            input{width: 100}
-            input[type="submit"]{
-                width: 180
-            }
-        </style>
-    </head>
-    <body>
-        <h1 style="text-align: center">评分系统</h1>
-        <form action="statistics.html" method="POST">
-            <p>
-                <span>陈博</span>
-                <input name="chenbo" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p> 
-                <span>陈民敬</span>  
-                <input name="chenminjing" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>陈天龙</span>
-                <input name="chentianlong" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>程遥</span> 
-                <input name="chengyao" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>邓启亮</span>  
-                <input name="dengqiliang" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>付金祥</span> 
-                <input name="fujinxiang" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>古意昌</span>
-                <input name="guyichang" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>李幸斌</span> 
-                <input name="lixingbin" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>吕毅</span>  
-                <input name="lvyi" name="chenbo" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>王东杰</span>  
-                <input name="wangdongjie" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>许威</span>
-                <input name="xuwei" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>叶洪</span>
-                <input name="yehong" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>张强</span>  
-                <input name="zhangqiang" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <p>
-                <span>朱龙飞</span>  
-                <input name="zhulongfei" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            </p>
-            <input type="submit" value="提交">
-        </form>
-    </body>
+
+<head>
+    <style type="text/css">
+        form{text-align: center}
+        span {
+            width: 70;
+            display: inline-block;
+        }
+        input {
+            width: 100
+        }
+        input[type="submit"] {
+            width: 120;
+            margin-left: -918
+        }
+        .main {
+            height: auto;
+            overflow: hidden;
+            margin: 0px auto;
+        }
+        .main td {
+            text-align: center;
+            height: 25px;
+            width: auto;
+            min-width: 50px;
+            line-height: 25px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+ <script>
+      window.onload = function () {
+          var users = "<%= users %>";
+          var a = document.getElementById('markingtable');
+          var b = (a.rows[1].cells[1]).childNodes[1];
+          //b.name="fdsa";
+      }
+  </script>
+</head>
+
+<body>
+    <h1 style="text-align: center">评分系统</h1>
+
+    <form action="statistics.html" method="POST">
+        <table class="main" id="markingtable" border="0" cellspacing="1" bgcolor="#666666">
+            <tr class="title">
+                <% markingtitle.forEach(function(t){ %>
+                    <td bgcolor="#CCCCCC">
+                        <%= t %>
+                    </td>
+                    <% }) %>
+            </tr>
+
+            <% users.forEach(function(user,j){ %>
+                <tr>
+                    <td bgcolor="#CCCCCC">
+                        <%= user %>
+                    </td>
+
+                    <% for (i = 1; i < markingtitle.length; i++) { %>
+                         <% if (i == 5) { %>
+                             <td bgcolor="#FFFFFF">
+                                <select name="<%= whoami %>_<%= usersen[j] %>_<%= markingtitlesen[i] %>">
+                                <option value="0">0天</option>
+                                <option value="1.2">1天</option>
+                                <option value="2.2">2天</option>
+                                <option value="3">3天</option>
+                                <option value="3.6">4天</option>
+                                <option value="4.2">5天</option>
+                                <option value="4.8">6天</option>
+                                <option value="5.4">7天</option>
+                                <option value="6">8天</option>
+                                <option value="6.6">9天</option>
+                                <option value="7.2">10天</option>
+                                <option value="7.8">11天</option>
+                                <option value="8.4">12天</option>
+                                <option value="9">13天</option>
+                                <option value="9.6">14天</option>
+                                <option value="10.2">15天</option>
+                               </select>
+                            </td>
+                         <% }else{ %>
+                            <td bgcolor="#FFFFFF">
+                                <input name="<%= whoami %>_<%= usersen[j] %>_<%= markingtitlesen[i] %>" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" style="border:0px;outline: none;">
+                            </td>
+                         <% } %>
+                     <% } %>
+                </tr>
+                <% }) %>
+        </table>
+        <br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+
 </html>
