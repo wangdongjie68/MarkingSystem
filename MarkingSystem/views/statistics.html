@@ -1,50 +1,118 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <style type="text/css">
-            table{ display: inline;
-            border: 3px;
-            border-color: aqua}
-        </style>
-    </head>
-    <body>
-<h1>Users</h1>
-<table>
-    <tr>
-        <td>
-            互评
-        </td>
-        <% users.forEach(function(user){ %>
-        <td><%= user %></td>
-        <% }) %>
-    </tr>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-    <% users.forEach(function(user,i){ %>
-    <tr>
-    <td><%= user %></td>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>评分统计结果</title>
+    <script src="http://suiyidian.cn/texiao/tab/jquery-1.5.2.min.js" type="text/javascript"></script>
+    <style>
+        .main {
+            height: auto;
+            overflow: hidden;
+            margin: 0px auto;
+        }
 
-    <% scores[i].forEach(function(score){ %>
-    <td><%= score %></td>
-    <% }) %>
+        .main td {
+            text-align: center;
+            height: 28px;
+            width: auto;
+            min-width: 50px;
+            line-height: 28px;
+            font-size: 14px;
+            color: #555;
+        }
 
-    </tr>
-    <% }) %>
-</table>
-<table>
-    <tr>
-    <% statisticscoretitles.forEach(function(statisticscoretitle,i){ %>
-    <td><%= statisticscoretitle %></td>
-    <% }) %>
-    </tr>
+        .main .title td {
+            cursor: pointer;
+            color: #333
+        }
 
-    <% statisticscores.forEach(function(statisticscore,i){ %>
-    <tr>
-         <% statisticscore.forEach(function(score){ %>
-         <td><%= score %></td>
-        <% }) %>
-    </tr>
-    <% }) %>
-</table>
+        .none {
+            display: none
+        }
+        h1{text-align: center}
+    </style>
 
-    </body>
+    <script>
+        $(function () {
+            var pk = 1;
+            $(".title td").click(function () {
+                // 把要排序的内容添加到数组里
+                var tIndex = parseInt($(this).index());
+                if(tIndex==0)return;
+                var valueArray = new Array();
+                var p = 0;
+                for (var i = 1; i < $("table tr").length; i++) {
+                    if (tIndex != 0) {
+                        valueArray[p] = parseInt($("table tr:eq(" + i + ") td").eq(tIndex).html());
+                    } else {
+                        valueArray[p] = $("table tr:eq(" + i + ") td").eq(tIndex).html();
+                    }
+                    p++;
+                }
+                //数据排序
+                if (pk == 1) {
+                    valueArray.sort(function (a, b) { return a <= b ? -1 : 1 })
+                    pk = 2
+                } else {
+                    valueArray.sort(function (a, b) { return a >= b ? -1 : 1 })
+                    pk = 1
+                }
+                //匹配内容 加入到一个隐藏的排序div里+-
+                for (var i = 0; i < valueArray.length; i++) {
+                    for (var d = 1; d < $("table tr").length; d++) {
+                        var valueText = tIndex != 0 ? parseInt($("table tr:eq(" + d + ") td").eq(tIndex).html()) : $("table tr:eq(" + d + ") td").eq(tIndex).html();
+                        if (valueArray[i] == valueText) {
+                            $("table tr").eq(d).clone().appendTo(".none")
+                        }
+                    }
+                    for (var j = i + 1; j < valueArray.length; j++) {
+                        if (valueArray[i] == valueArray[j]) {
+                            i++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                //重新整理html 排序，添加到视图里
+                var titleClone = $("table tr").eq(0).clone(true);
+                $("table").html("").append(titleClone);
+                $("table").append($(".none").html())
+                $(".none").html("");
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    <h1>评分统计结果</h1>
+    <table class="main" border="0" cellspacing="1" bgcolor="#666666">
+        <tr class="title">
+            <td bgcolor="#CCCCCC">
+                互评
+            </td>
+            <% title.forEach(function(t){ %>
+                <td bgcolor="#CCCCCC">
+                    <%= t %>
+                </td>
+                <% }) %>
+        </tr>
+
+        <% users.forEach(function(user,i){ %>
+            <tr>
+                <td bgcolor="#CCCCCC">
+                    <%= user %>
+                </td>
+
+                <% scores[i].forEach(function(score){ %>
+                    <td bgcolor="#FFFFFF">
+                        <%= score %>
+                    </td>
+                    <% }) %>
+            </tr>
+            <% }) %>
+    </table>
+    <div class="none"></div>
+</body>
 </html>
