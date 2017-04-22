@@ -2,42 +2,46 @@ var express = require('express');
 var router = express.Router();
 
 var whoami = "";
+var jiafenxiangdir = {};
+var maxaveragescore = 0;
+var maxzonglakaifencha = 0;
 var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
-var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分'];
+var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '额外加分明细', '总-拉开差', '最终分'];
 
-var markingtitle = ['姓名', '工作项评分', '专利', '小零识', '导师', '定制版', '招聘', '内推', '培训','服务生','特殊加分'];
-var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun','fuwusheng','teshujiafen'];
-var usersen = ['chenbo','chenminjing','chentianlong','chengyao','dengqiliang','fujinxiang','guyichang','lixingbin','lvyi','wangdongjie','xuwei','yehong','zhangqiang','zhulongfei'];
+var markingtitle = ['姓名', '工作项评分', '专利', '小零识', '导师', '定制版', '招聘', '内推', '培训', '服务生', '特殊加分'];
+var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun', 'fuwusheng', 'teshujiafen'];
+var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'guyichang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei'];
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {  
-      users: users,
-      usersen: usersen, });
+  res.render('index', {
+    users: users,
+    usersen: usersen,
+  });
 });
 
 /* GET marking page. */
 router.get('/marking.html', function (req, res, next) {
   res.render('marking', {
-      users: users,
-      scores: scores, 
-      usersen: usersen,
-      markingtitle: markingtitle, 
-      markingtitlesen: markingtitlesen,
-    });
+    users: users,
+    scores: scores,
+    usersen: usersen,
+    markingtitle: markingtitle,
+    markingtitlesen: markingtitlesen,
+  });
 });
 
 /* POST marking page. */
 router.post('/marking.html', function (req, res, next) {
   res.cookie('whoami', req.body.whoami);
   res.render('marking', {
-      whoami: req.body.whoami,
-      users: users,
-      scores: scores, 
-      usersen: usersen,
-      markingtitle: markingtitle,
-      markingtitlesen: markingtitlesen,
-    });
+    whoami: req.body.whoami,
+    users: users,
+    scores: scores,
+    usersen: usersen,
+    markingtitle: markingtitle,
+    markingtitlesen: markingtitlesen,
+  });
 });
 
 var scores = new Array;
@@ -45,31 +49,44 @@ for (var i = 0; i < users.length; i++) {
   scores[i] = new Array();
   for (var j = 0; j < title.length; j++) {
     scores[i][j] = 0;
+    if (j == 18) scores[i][j] = "";
   }
 }
+
+usersen.forEach(function (whoen) {
+  usersen.forEach(function (useren) {
+    markingtitlesen.forEach(function (jiafenxiang, j) {
+      if (j >= 2) {
+        var jiafenxiangkey = whoen + "_" + useren + "_" + jiafenxiang;
+        jiafenxiangdir[jiafenxiangkey] = 0;
+      }
+    }, this);
+  }, this);
+}, this);
+
 
 router.post('/statistics.html', function (req, res, next) {
   var index = usersen.indexOf(req.cookies.whoami);
   if (index != -1) {
-    usersen.forEach(function(useren,i) {
-      var gongzuoxiang = req.cookies.whoami+"_"+useren+"_"+"gongzuoxiang";
+    //记录工作项评分
+    usersen.forEach(function (useren, i) {
+      var gongzuoxiang = req.cookies.whoami + "_" + useren + "_" + "gongzuoxiang";
       scores[i][index] = CheckScore(req.body[gongzuoxiang]);
     }, this);
-    
-    // scores[1][index] = CheckScore(req.body.chenminjing);
-    // scores[2][index] = CheckScore(req.body.chentianlong);
-    // scores[3][index] = CheckScore(req.body.chengyao);
-    // scores[4][index] = CheckScore(req.body.dengqiliang);
-    // scores[5][index] = CheckScore(req.body.fujinxiang);
-    // scores[6][index] = CheckScore(req.body.guyichang);
-    // scores[7][index] = CheckScore(req.body.lixingbin);
-    // scores[8][index] = CheckScore(req.body.lvyi);
-    // scores[9][index] = CheckScore(req.body.wangdongjie);
-    // scores[10][index] = CheckScore(req.body.xuwei);
-    // scores[11][index] = CheckScore(req.body.yehong);
-    // scores[12][index] = CheckScore(req.body.zhangqiang);
-    // scores[13][index] = CheckScore(req.body.zhulongfei);
-    Statistic();
+
+    //记录加分项评分
+    usersen.forEach(function (useren, i) {
+      markingtitlesen.forEach(function (jiafenxiang, j) {
+        if (j >= 2) {
+          var jiafenxiangkey = req.cookies.whoami + "_" + useren + "_" + jiafenxiang;
+          jiafenxiangdir[jiafenxiangkey] = CheckScore(req.body[jiafenxiangkey]);
+        }
+      }, this);
+    }, this);
+
+    GongzuoxiangStatistic();
+    jiafenxiangStatistic();
+    ResultStatistic();
   }
   Load(res);
 });
@@ -114,15 +131,65 @@ function CountFinishUser() {
   return count;
 }
 
-function Statistic() {
+function GongzuoxiangStatistic() {
   var totle = 0;
+  //计算工作项总分及平均分。
   scores.forEach(function (everyonescore, i) {
     for (j = 0; j < users.length; j++) {
       totle += ~~everyonescore[j];
     }
-    scores[i][14] = totle;
-    scores[i][15] = (totle / scores.length).toFixed(1);
+    scores[i][14] = totle.toFixed(0);
+    var average = (totle / scores.length).toFixed(1);
+    scores[i][15] = average;
+
+    if (average > maxaveragescore) {
+      maxaveragescore = average;
+    }
     totle = 0;
+  }, this);
+
+  //计算工作项拉开分差。
+  scores.forEach(function (everyonescore, i) {
+    scores[i][16] = (scores[i][15] / maxaveragescore * 140).toFixed(1);
+  }, this);
+}
+
+function jiafenxiangStatistic() {
+  //计算每个人的加分项总全，并记录明细。
+  var jiafenxiangtotal = 0;
+  var jiafenxiangmingxi = "";
+  usersen.forEach(function (useren, i) {
+    usersen.forEach(function (whoen) {
+      markingtitlesen.forEach(function (jiafenxiang, j) {
+        if (j >= 2) {
+          var jiafenxiangkey = whoen + "_" + useren + "_" + jiafenxiang;
+          var value = jiafenxiangdir[jiafenxiangkey];
+          if (value > 0) {
+            jiafenxiangmingxi += users[usersen.indexOf(whoen)] + "_" + users[usersen.indexOf(useren)] + "_" + markingtitle[markingtitlesen.indexOf(jiafenxiang)] + ":" + value + "\r\n";
+          }
+          jiafenxiangtotal += value;
+        }
+      }, this);
+    }, this);
+    scores[i][17] = jiafenxiangtotal;
+    scores[i][18] = jiafenxiangmingxi;
+    jiafenxiangtotal = 0;
+    jiafenxiangmingxi = "";
+  }, this);
+}
+
+function ResultStatistic() {
+  //计算总-拉开分差。
+  scores.forEach(function (everyonescore, i) {
+    scores[i][19] = ~~scores[i][16] + ~~scores[i][17];
+    if (scores[i][19] > maxzonglakaifencha) {
+      maxzonglakaifencha = scores[i][19];
+    }
+  }, this);
+
+  //计算最终分。
+  scores.forEach(function (everyonescore, i) {
+    scores[i][20] = (scores[i][19] / maxzonglakaifencha * 120).toFixed(1);
   }, this);
 }
 
