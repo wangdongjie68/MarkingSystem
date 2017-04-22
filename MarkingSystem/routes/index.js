@@ -5,6 +5,8 @@ var whoami = "";
 var jiafenxiangdir = {};
 var maxaveragescore = 0;
 var maxzonglakaifencha = 0;
+var isneedshowresult = "false";
+
 var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
 var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '额外加分明细', '总-拉开差', '最终分'];
 
@@ -29,6 +31,17 @@ router.get('/marking.html', function (req, res, next) {
     markingtitle: markingtitle,
     markingtitlesen: markingtitlesen,
   });
+});
+
+/* GET setting page. */
+router.get('/sethaha.html', function (req, res, next) {
+  res.render('sethaha');
+});
+
+/* POST setting page. */
+router.post('/sethaha.html', function (req, res, next) {
+  isneedshowresult = req.body.isneedshowresult;
+  res.render('sethaha');
 });
 
 /* POST marking page. */
@@ -100,8 +113,7 @@ router.get('/statistics.html', function (req, res, next) {
 });
 
 function Load(res) {
-  var finishusercount = CountFinishUser();
-  if (CountFinishUser() >= 1) {
+  if (isneedshowresult == "true") {
     res.render('statistics', {
       title: title,
       users: users,
@@ -109,6 +121,7 @@ function Load(res) {
     });
   }
   else {
+    var finishusercount = CountFinishUser();
     res.render('submiting', {
       users: users,
       finishusercount: finishusercount,
@@ -195,7 +208,7 @@ function ResultStatistic() {
   scores.forEach(function (everyonescore, i) {
     scores[i][20] = (scores[i][19] / maxzonglakaifencha * 120).toFixed(1);
   }, this);
-  
+
   maxaveragescore = 0;
   maxzonglakaifencha = 0;
 }
