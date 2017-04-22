@@ -68,25 +68,29 @@ usersen.forEach(function (whoen) {
 router.post('/statistics.html', function (req, res, next) {
   var index = usersen.indexOf(req.cookies.whoami);
   if (index != -1) {
-    //记录工作项评分
-    usersen.forEach(function (useren, i) {
-      var gongzuoxiang = req.cookies.whoami + "_" + useren + "_" + "gongzuoxiang";
-      scores[i][index] = CheckScore(req.body[gongzuoxiang]);
-    }, this);
-
-    //记录加分项评分
-    usersen.forEach(function (useren, i) {
-      markingtitlesen.forEach(function (jiafenxiang, j) {
-        if (j >= 2) {
-          var jiafenxiangkey = req.cookies.whoami + "_" + useren + "_" + jiafenxiang;
-          jiafenxiangdir[jiafenxiangkey] = CheckScore(req.body[jiafenxiangkey]);
-        }
+    var aaa = req.cookies.whoami + "_" + usersen[0] + "_" + "gongzuoxiang";
+    if (req.body[aaa] != undefined) {
+      //记录工作项评分
+      usersen.forEach(function (useren, i) {
+        var gongzuoxiang = req.cookies.whoami + "_" + useren + "_" + "gongzuoxiang";
+        var a = req.body[gongzuoxiang];
+        scores[i][index] = CheckScore(req.body[gongzuoxiang]);
       }, this);
-    }, this);
 
-    GongzuoxiangStatistic();
-    jiafenxiangStatistic();
-    ResultStatistic();
+      //记录加分项评分
+      usersen.forEach(function (useren, i) {
+        markingtitlesen.forEach(function (jiafenxiang, j) {
+          if (j >= 2) {
+            var jiafenxiangkey = req.cookies.whoami + "_" + useren + "_" + jiafenxiang;
+            jiafenxiangdir[jiafenxiangkey] = CheckScore(req.body[jiafenxiangkey]);
+          }
+        }, this);
+      }, this);
+
+      GongzuoxiangStatistic();
+      jiafenxiangStatistic();
+      ResultStatistic();
+    }
   }
   Load(res);
 });
@@ -165,7 +169,7 @@ function jiafenxiangStatistic() {
           var jiafenxiangkey = whoen + "_" + useren + "_" + jiafenxiang;
           var value = jiafenxiangdir[jiafenxiangkey];
           if (value > 0) {
-            jiafenxiangmingxi += users[usersen.indexOf(whoen)] + "_" + users[usersen.indexOf(useren)] + "_" + markingtitle[markingtitlesen.indexOf(jiafenxiang)] + ":" + value + "\r\n";
+            jiafenxiangmingxi += users[usersen.indexOf(whoen)] + "_" + markingtitle[markingtitlesen.indexOf(jiafenxiang)] + ": " + value + "\r\n";
           }
           jiafenxiangtotal += value;
         }
@@ -191,6 +195,9 @@ function ResultStatistic() {
   scores.forEach(function (everyonescore, i) {
     scores[i][20] = (scores[i][19] / maxzonglakaifencha * 120).toFixed(1);
   }, this);
+  
+  maxaveragescore = 0;
+  maxzonglakaifencha = 0;
 }
 
 module.exports = router;
