@@ -35,7 +35,6 @@
           var users = "<%= users %>";
           var a = document.getElementById('markingtable');
           var b = (a.rows[1].cells[1]).childNodes[1];
-          //b.name="fdsa";
       }
   </script>
 </head>
@@ -44,6 +43,8 @@
     <h1 style="text-align: center">评分系统</h1>
 
     <form action="statistics.html" method="POST">
+        <p><%= users[usersen.indexOf(whoami)] %></p>
+        <input type="text" name = "whoami" value="<%= users[usersen.indexOf(whoami)] %>" readonly hidden/>
         <table class="main" id="markingtable" border="0" cellspacing="1" bgcolor="#666666">
             <tr class="title">
                 <% markingtitle.forEach(function(t){ %>

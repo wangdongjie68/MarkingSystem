@@ -2,17 +2,22 @@ var express = require('express');
 var router = express.Router();
 
 var whoami = "";
+var scores = new Array;
 var jiafenxiangdir = {};
 var maxaveragescore = 0;
 var maxzonglakaifencha = 0;
 var isneedshowresult = "false";
+var jiafenxiangscores = new Array;
 
 var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
-var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '额外加分明细', '总-拉开差', '最终分'];
+var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
 
+var jiafenmingxititle = ['姓名', '总分', '明细'];
 var markingtitle = ['姓名', '工作项评分', '专利', '小零识', '导师', '定制版', '招聘', '内推', '培训', '服务生', '特殊加分'];
 var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun', 'fuwusheng', 'teshujiafen'];
 var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'guyichang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei'];
+
+initdata();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -46,7 +51,7 @@ router.post('/sethaha.html', function (req, res, next) {
 
 /* POST marking page. */
 router.post('/marking.html', function (req, res, next) {
-  res.cookie('whoami', req.body.whoami);
+  //res.cookie('whoami', req.body.whoami);
   res.render('marking', {
     whoami: req.body.whoami,
     users: users,
@@ -57,35 +62,15 @@ router.post('/marking.html', function (req, res, next) {
   });
 });
 
-var scores = new Array;
-for (var i = 0; i < users.length; i++) {
-  scores[i] = new Array();
-  for (var j = 0; j < title.length; j++) {
-    scores[i][j] = 0;
-    if (j == 18) scores[i][j] = "";
-  }
-}
-
-usersen.forEach(function (whoen) {
-  usersen.forEach(function (useren) {
-    markingtitlesen.forEach(function (jiafenxiang, j) {
-      if (j >= 2) {
-        var jiafenxiangkey = whoen + "_" + useren + "_" + jiafenxiang;
-        jiafenxiangdir[jiafenxiangkey] = 0;
-      }
-    }, this);
-  }, this);
-}, this);
-
-
 router.post('/statistics.html', function (req, res, next) {
-  var index = usersen.indexOf(req.cookies.whoami);
+  var index = users.indexOf(req.body.whoami);
   if (index != -1) {
-    var aaa = req.cookies.whoami + "_" + usersen[0] + "_" + "gongzuoxiang";
-    if (req.body[aaa] != undefined) {
+    var owner = usersen[index]
+    var key = owner + "_" + usersen[0] + "_" + "gongzuoxiang";
+    if (req.body[key] != undefined) {
       //记录工作项评分
       usersen.forEach(function (useren, i) {
-        var gongzuoxiang = req.cookies.whoami + "_" + useren + "_" + "gongzuoxiang";
+        var gongzuoxiang = owner + "_" + useren + "_" + "gongzuoxiang";
         var a = req.body[gongzuoxiang];
         scores[i][index] = CheckScore(req.body[gongzuoxiang]);
       }, this);
@@ -94,7 +79,7 @@ router.post('/statistics.html', function (req, res, next) {
       usersen.forEach(function (useren, i) {
         markingtitlesen.forEach(function (jiafenxiang, j) {
           if (j >= 2) {
-            var jiafenxiangkey = req.cookies.whoami + "_" + useren + "_" + jiafenxiang;
+            var jiafenxiangkey = owner + "_" + useren + "_" + jiafenxiang;
             jiafenxiangdir[jiafenxiangkey] = CheckScore(req.body[jiafenxiangkey]);
           }
         }, this);
@@ -118,6 +103,8 @@ function Load(res) {
       title: title,
       users: users,
       scores: scores,
+      jiafenmingxititle: jiafenmingxititle,
+      jiafenxiangscores: jiafenxiangscores,
     });
   }
   else {
@@ -125,8 +112,43 @@ function Load(res) {
     res.render('submiting', {
       users: users,
       finishusercount: finishusercount,
+      jiafenmingxititle: jiafenmingxititle,
+      jiafenxiangscores: jiafenxiangscores,
     });
   }
+}
+
+function initdata() {
+  whoami = "";
+  maxaveragescore = 0;
+  maxzonglakaifencha = 0;
+  isneedshowresult = "false";
+  
+  for (var i = 0; i < users.length; i++) {
+    scores[i] = new Array();
+    for (var j = 0; j < title.length; j++) {
+      scores[i][j] = 0;
+    }
+  }
+
+  for (var i = 0; i < users.length; i++) {
+    jiafenxiangscores[i] = new Array();
+    for (var j = 0; j < 2; j++) {
+      jiafenxiangscores[i][j] = 0;
+      if (j == 1) jiafenxiangscores[i][j] = "";
+    }
+  }
+
+  usersen.forEach(function (whoen) {
+    usersen.forEach(function (useren) {
+      markingtitlesen.forEach(function (jiafenxiang, j) {
+        if (j >= 2) {
+          var jiafenxiangkey = whoen + "_" + useren + "_" + jiafenxiang;
+          jiafenxiangdir[jiafenxiangkey] = 0;
+        }
+      }, this);
+    }, this);
+  }, this);
 }
 
 function CheckScore(score) {
@@ -182,14 +204,15 @@ function jiafenxiangStatistic() {
           var jiafenxiangkey = whoen + "_" + useren + "_" + jiafenxiang;
           var value = jiafenxiangdir[jiafenxiangkey];
           if (value > 0) {
-            jiafenxiangmingxi += users[usersen.indexOf(whoen)] + "_" + markingtitle[markingtitlesen.indexOf(jiafenxiang)] + ": " + value + "\r\n";
+            jiafenxiangmingxi += users[usersen.indexOf(whoen)] + ">" + markingtitle[markingtitlesen.indexOf(jiafenxiang)] + "【" + value + "】";
           }
           jiafenxiangtotal += value;
         }
       }, this);
     }, this);
     scores[i][17] = jiafenxiangtotal;
-    scores[i][18] = jiafenxiangmingxi;
+    jiafenxiangscores[i][0] = jiafenxiangtotal;
+    jiafenxiangscores[i][1] = jiafenxiangmingxi;
     jiafenxiangtotal = 0;
     jiafenxiangmingxi = "";
   }, this);
@@ -198,15 +221,15 @@ function jiafenxiangStatistic() {
 function ResultStatistic() {
   //计算总-拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][19] = ~~scores[i][16] + ~~scores[i][17];
-    if (scores[i][19] > maxzonglakaifencha) {
-      maxzonglakaifencha = scores[i][19];
+    scores[i][18] = ~~scores[i][16] + ~~scores[i][17];
+    if (scores[i][18] > maxzonglakaifencha) {
+      maxzonglakaifencha = scores[i][18];
     }
   }, this);
 
   //计算最终分。
   scores.forEach(function (everyonescore, i) {
-    scores[i][20] = (scores[i][19] / maxzonglakaifencha * 120).toFixed(1);
+    scores[i][19] = (scores[i][18] / maxzonglakaifencha * 120).toFixed(1);
   }, this);
 
   maxaveragescore = 0;
