@@ -210,6 +210,9 @@ function jiafenxiangStatistic() {
         }
       }, this);
     }, this);
+    if(jiafenxiangtotal > 10){
+      jiafenxiangtotal = 10;
+    }
     scores[i][17] = jiafenxiangtotal;
     jiafenxiangscores[i][0] = jiafenxiangtotal;
     jiafenxiangscores[i][1] = jiafenxiangmingxi;
