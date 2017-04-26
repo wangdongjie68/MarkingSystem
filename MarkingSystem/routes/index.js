@@ -177,8 +177,8 @@ function GongzuoxiangStatistic() {
     for (j = 0; j < users.length; j++) {
       totle += parseFloat(everyonescore[j]);
     }
-    scores[i][13] = totle.toFixed(0);
-    var average = (totle / scores.length).toFixed(1);
+    scores[i][13] = parseFloat(totle.toFixed(0));
+    var average = parseFloat((totle / scores.length).toFixed(1));
     scores[i][14] = average;
 
     if (average > maxaveragescore) {
@@ -189,7 +189,7 @@ function GongzuoxiangStatistic() {
 
   //计算工作项拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][15] = (parseFloat(scores[i][14]) / maxaveragescore * 140).toFixed(1);
+    scores[i][15] = parseFloat((scores[i][14] / maxaveragescore * 140).toFixed(1));
   }, this);
 }
 
@@ -224,15 +224,15 @@ function jiafenxiangStatistic() {
 function ResultStatistic() {
   //计算总-拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][17] = (parseFloat(scores[i][15])+parseFloat(scores[i][16])).toFixed(1);
-    if (parseFloat(scores[i][17]) > maxzonglakaifencha) {
-      maxzonglakaifencha = parseFloat(scores[i][17]);
+    scores[i][17] = parseFloat((scores[i][15] + scores[i][16]).toFixed(1));
+    if (scores[i][17] > maxzonglakaifencha) {
+      maxzonglakaifencha = scores[i][17];
     }
   }, this);
 
   //计算最终分。
   scores.forEach(function (everyonescore, i) {
-    scores[i][18] = (parseFloat(scores[i][17]) / maxzonglakaifencha * 120).toFixed(1);
+    scores[i][18] = parseFloat((scores[i][17] / maxzonglakaifencha * 120).toFixed(1));
   }, this);
 
   maxaveragescore = 0;
