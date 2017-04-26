@@ -9,13 +9,13 @@ var maxzonglakaifencha = 0;
 var isneedshowresult = "false";
 var jiafenxiangscores = new Array;
 
-var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
-var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
+var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
+var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
 
 var jiafenmingxititle = ['姓名', '额外加分项总分', '额外加分项明细'];
 var markingtitle = ['姓名', '工作项评分', '专利（东杰）', '小零识（天龙）', '导师', '定制版', '招聘', '内推', '培训', '服务生', '特殊加分'];
 var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun', 'fuwusheng', 'teshujiafen'];
-var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'guyichang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei'];
+var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei'];
 
 initdata();
 
@@ -156,14 +156,14 @@ function CheckScore(score) {
     return 0;
   }
   else {
-    return ~~score;
+    return parseFloat(score);
   }
 }
 
 function CountFinishUser() {
   var count = 0;
   for (i = 0; i < users.length; i++) {
-    if (~~scores[0][i] > 0) {
+    if (parseFloat(scores[0][i]) > 0) {
       count++;
     }
   }
@@ -175,11 +175,11 @@ function GongzuoxiangStatistic() {
   //计算工作项总分及平均分。
   scores.forEach(function (everyonescore, i) {
     for (j = 0; j < users.length; j++) {
-      totle += ~~everyonescore[j];
+      totle += parseFloat(everyonescore[j]);
     }
-    scores[i][14] = totle.toFixed(0);
+    scores[i][13] = totle.toFixed(0);
     var average = (totle / scores.length).toFixed(1);
-    scores[i][15] = average;
+    scores[i][14] = average;
 
     if (average > maxaveragescore) {
       maxaveragescore = average;
@@ -189,7 +189,7 @@ function GongzuoxiangStatistic() {
 
   //计算工作项拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][16] = (scores[i][15] / maxaveragescore * 140).toFixed(1);
+    scores[i][15] = (parseFloat(scores[i][14]) / maxaveragescore * 140).toFixed(1);
   }, this);
 }
 
@@ -213,7 +213,7 @@ function jiafenxiangStatistic() {
     if(jiafenxiangtotal > 10){
       jiafenxiangtotal = 10;
     }
-    scores[i][17] = jiafenxiangtotal;
+    scores[i][16] = jiafenxiangtotal;
     jiafenxiangscores[i][0] = jiafenxiangtotal;
     jiafenxiangscores[i][1] = jiafenxiangmingxi;
     jiafenxiangtotal = 0;
@@ -224,15 +224,15 @@ function jiafenxiangStatistic() {
 function ResultStatistic() {
   //计算总-拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][18] = ~~scores[i][16] + ~~scores[i][17];
-    if (scores[i][18] > maxzonglakaifencha) {
-      maxzonglakaifencha = scores[i][18];
+    scores[i][17] = (parseFloat(scores[i][15])+parseFloat(scores[i][16])).toFixed(1);
+    if (parseFloat(scores[i][17]) > maxzonglakaifencha) {
+      maxzonglakaifencha = parseFloat(scores[i][17]);
     }
   }, this);
 
   //计算最终分。
   scores.forEach(function (everyonescore, i) {
-    scores[i][19] = (scores[i][18] / maxzonglakaifencha * 120).toFixed(1);
+    scores[i][18] = (parseFloat(scores[i][17]) / maxzonglakaifencha * 120).toFixed(1);
   }, this);
 
   maxaveragescore = 0;

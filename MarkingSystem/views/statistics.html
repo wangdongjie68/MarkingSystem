@@ -33,13 +33,13 @@
             var pk = 1;
             $(".title td").click(function () {
                 // 把要排序的内容添加到数组里
-                var tIndex = parseInt($(this).index());
-                if(tIndex==0||tIndex==19)return;
+                var tIndex = parseFloat($(this).index());
+                if(tIndex==0)return;
                 var valueArray = new Array();
                 var p = 0;
                 for (var i = 1; i < $("table tr").length; i++) {
                     if (tIndex != 0) {
-                        valueArray[p] = parseInt($("table tr:eq(" + i + ") td").eq(tIndex).html());
+                        valueArray[p] = parseFloat($("table tr:eq(" + i + ") td").eq(tIndex).html());
                     } else {
                         valueArray[p] = $("table tr:eq(" + i + ") td").eq(tIndex).html();
                     }
@@ -56,7 +56,7 @@
                 //匹配内容 加入到一个隐藏的排序div里+-
                 for (var i = 0; i < valueArray.length; i++) {
                     for (var d = 1; d < $("table tr").length; d++) {
-                        var valueText = tIndex != 0 ? parseInt($("table tr:eq(" + d + ") td").eq(tIndex).html()) : $("table tr:eq(" + d + ") td").eq(tIndex).html();
+                        var valueText = tIndex != 0 ? parseFloat($("table tr:eq(" + d + ") td").eq(tIndex).html()) : $("table tr:eq(" + d + ") td").eq(tIndex).html();
                         if (valueArray[i] == valueText) {
                             $("table tr").eq(d).clone().appendTo(".none")
                         }
