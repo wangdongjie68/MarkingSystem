@@ -13,7 +13,7 @@ var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金�
 var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '古意昌', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
 
 var jiafenmingxititle = ['姓名', '额外加分项总分', '额外加分项明细'];
-var markingtitle = ['姓名', '工作项评分', '专利', '小零识', '导师', '定制版', '招聘', '内推', '培训', '服务生', '特殊加分'];
+var markingtitle = ['姓名', '工作项评分', '专利（东杰）', '小零识（天龙）', '导师', '定制版', '招聘', '内推', '培训', '服务生', '特殊加分'];
 var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun', 'fuwusheng', 'teshujiafen'];
 var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'guyichang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei'];
 
