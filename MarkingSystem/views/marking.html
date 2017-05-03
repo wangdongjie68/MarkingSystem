@@ -29,22 +29,38 @@
             font-size: 14px;
             color: #555;
         }
+        .display-none{
+            display: none
+        }
     </style>
  <script>
-      window.onload = function () {
-          var users = "<%= users %>";
-          var a = document.getElementById('markingtable');
-          var b = (a.rows[1].cells[1]).childNodes[1];
+     window.onload = function () {
+          var submitter = document.getElementById('submitter');
+          var index = submitter.selectedIndex;
+          if(index > 0){
+              selectchange(index);
+          }
       }
-  </script>
+     function selectchange(index){
+         var submitbutton = document.getElementById("submitbutton");
+         submitbutton.removeAttribute("disabled");
+     }
+</script>
 </head>
 
 <body>
-    <h1 style="text-align: center">评分系统</h1>
+    <h1 style="text-align: center">欢迎使用评分系统</h1>
 
     <form action="statistics.html" method="POST">
-        <p><%= users[usersen.indexOf(whoami)] %></p>
-        <input type="text" name = "whoami" value="<%= users[usersen.indexOf(whoami)] %>" readonly hidden/>
+        <p>请留下大名：
+             <select id="submitter" name="whoami" onchange="selectchange(this.options[this.options.selectedIndex].value)">
+                    <option value="" selected="true" disabled="true" class="display-none">请选择</option>
+                  <% users.forEach(function(user,i){ %>
+                    <option value="<%= usersen[i] %>"><%= user %></option>
+                  <% }) %>
+             </select>
+             <br>
+        </p>
         <table class="main" id="markingtable" border="0" cellspacing="1" bgcolor="#666666">
             <tr class="title">
                 <% markingtitle.forEach(function(t){ %>
@@ -63,7 +79,7 @@
                     <% for (i = 1; i < markingtitle.length; i++) { %>
                          <% if (i == 5) { %>
                              <td bgcolor="#FFFFFF">
-                                <select name="<%= whoami %>_<%= usersen[j] %>_<%= markingtitlesen[i] %>">
+                                <select name="<%= usersen[j] %>_<%= markingtitlesen[i] %>">
                                 <option value="0">0天</option>
                                 <option value="1.2">1天</option>
                                 <option value="2.2">2天</option>
@@ -84,7 +100,7 @@
                             </td>
                          <% }else{ %>
                             <td bgcolor="#FFFFFF">
-                                <input name="<%= whoami %>_<%= usersen[j] %>_<%= markingtitlesen[i] %>" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" style="border:0px;outline: none;">
+                                <input name="<%= usersen[j] %>_<%= markingtitlesen[i] %>" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" style="border:0px;outline: none;">
                             </td>
                          <% } %>
                      <% } %>
@@ -92,8 +108,7 @@
                 <% }) %>
         </table>
         <br>
-        <input type="submit" value="提交">
+        <input id="submitbutton" type="submit" value="提交" disabled>
     </form>
 </body>
-
 </html>

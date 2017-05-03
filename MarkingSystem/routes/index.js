@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-var whoami = "";
-var scores = new Array;
-var jiafenxiangdir = {};
 var maxaveragescore = 0;
 var maxzonglakaifencha = 0;
 var isneedshowresult = "false";
+
+var scores = new Array;
+var submitters = new Array;
+var jiafenxiangdir = new Array;
 var jiafenxiangscores = new Array;
 
 var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
@@ -19,16 +20,8 @@ var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang
 
 initdata();
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', {
-    users: users,
-    usersen: usersen,
-  });
-});
-
 /* GET marking page. */
-router.get('/marking.html', function (req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('marking', {
     users: users,
     scores: scores,
@@ -49,29 +42,16 @@ router.post('/sethaha.html', function (req, res, next) {
   res.render('sethaha');
 });
 
-/* POST marking page. */
-router.post('/marking.html', function (req, res, next) {
-  //res.cookie('whoami', req.body.whoami);
-  res.render('marking', {
-    whoami: req.body.whoami,
-    users: users,
-    scores: scores,
-    usersen: usersen,
-    markingtitle: markingtitle,
-    markingtitlesen: markingtitlesen,
-  });
-});
-
 router.post('/statistics.html', function (req, res, next) {
-  var index = users.indexOf(req.body.whoami);
+  var whoami = req.body.whoami;
+  var index = usersen.indexOf(whoami);
   if (index != -1) {
-    var owner = usersen[index]
-    var key = owner + "_" + usersen[0] + "_" + "gongzuoxiang";
+    submitters[index] = true;
+    var key = usersen[0] + "_" + "gongzuoxiang";
     if (req.body[key] != undefined) {
       //记录工作项评分
       usersen.forEach(function (useren, i) {
-        var gongzuoxiang = owner + "_" + useren + "_" + "gongzuoxiang";
-        var a = req.body[gongzuoxiang];
+        var gongzuoxiang = useren + "_" + "gongzuoxiang";
         scores[i][index] = CheckScore(req.body[gongzuoxiang]);
       }, this);
 
@@ -79,8 +59,9 @@ router.post('/statistics.html', function (req, res, next) {
       usersen.forEach(function (useren, i) {
         markingtitlesen.forEach(function (jiafenxiang, j) {
           if (j >= 2) {
-            var jiafenxiangkey = owner + "_" + useren + "_" + jiafenxiang;
-            jiafenxiangdir[jiafenxiangkey] = CheckScore(req.body[jiafenxiangkey]);
+            var jiafenxiangkey = useren + "_" + jiafenxiang;
+            var jiafenxiangdirkey = whoami + "_" + useren + "_" + jiafenxiang;
+            jiafenxiangdir[jiafenxiangdirkey] = CheckScore(req.body[jiafenxiangkey]);
           }
         }, this);
       }, this);
@@ -89,8 +70,8 @@ router.post('/statistics.html', function (req, res, next) {
       jiafenxiangStatistic();
       ResultStatistic();
     }
+    Load(res);
   }
-  Load(res);
 });
 
 router.get('/statistics.html', function (req, res, next) {
@@ -111,6 +92,7 @@ function Load(res) {
     var finishusercount = CountFinishUser();
     res.render('submiting', {
       users: users,
+      submitters: submitters,
       finishusercount: finishusercount,
       jiafenmingxititle: jiafenmingxititle,
       jiafenxiangscores: jiafenxiangscores,
@@ -119,7 +101,6 @@ function Load(res) {
 }
 
 function initdata() {
-  whoami = "";
   maxaveragescore = 0;
   maxzonglakaifencha = 0;
   isneedshowresult = "false";
@@ -149,6 +130,10 @@ function initdata() {
       }, this);
     }, this);
   }, this);
+
+  users.forEach(function (user, i){
+    submitters[i] = false;
+  });
 }
 
 function CheckScore(score) {

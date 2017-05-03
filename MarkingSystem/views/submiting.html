@@ -1,5 +1,4 @@
 <html>
-
 <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>评分统计结果</title>
@@ -89,13 +88,22 @@
 
 <body>
     <h1>正在紧张的统计中…</h1>
-    <p>
-        <%= finishusercount %> /
-            <%= users.length %>
-            <a href="javascript:location.reload();" >刷新</a>
+    <p> 已提交：
+         <% submitters.forEach(function(submitter, i){ %>
+          <% if(submitter == true){ %>
+             <%= users[i] %>
+          <% } %>
+         <% }) %>
+    </p>
+    <p> 未提交：
+        <% submitters.forEach(function(submitter, i){ %>
+          <% if(submitter != true){ %>
+             <%= users[i] %>
+          <% } %>
+         <% }) %>
     </p>
 
-    <h2>先看额外加分项</h2>
+    <h2>已提交的同学可以先看下面的额外加分项统计</h2>
 
     <table class="main" border="0" cellspacing="1" bgcolor="#666666">
         <tr class="title">
