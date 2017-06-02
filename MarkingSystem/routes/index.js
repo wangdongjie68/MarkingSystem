@@ -10,13 +10,13 @@ var submitters = new Array;
 var jiafenxiangdir = new Array;
 var jiafenxiangscores = new Array;
 
-var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞'];
-var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
+var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞','邓壮','黄腾霄','余冬','郑旭'];
+var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞','邓壮','黄腾霄','余冬','郑旭', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
 
 var jiafenmingxititle = ['姓名', '额外加分项总分', '额外加分项明细'];
 var markingtitle = ['姓名', '工作项评分', '专利（东杰）', '小零识（天龙）', '导师', '定制版', '招聘', '内推', '培训', '服务生', '特殊加分'];
 var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun', 'fuwusheng', 'teshujiafen'];
-var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei'];
+var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei','dengzhuang','huangtengxiao','yudong','zhengxu'];
 
 initdata();
 
@@ -162,9 +162,9 @@ function GongzuoxiangStatistic() {
     for (j = 0; j < users.length; j++) {
       totle += parseFloat(everyonescore[j]);
     }
-    scores[i][13] = parseFloat(totle.toFixed(0));
+    scores[i][title.length-6] = parseFloat(totle.toFixed(0));
     var average = parseFloat((totle / scores.length).toFixed(1));
-    scores[i][14] = average;
+    scores[i][title.length-5] = average;
 
     if (average > maxaveragescore) {
       maxaveragescore = average;
@@ -174,7 +174,7 @@ function GongzuoxiangStatistic() {
 
   //计算工作项拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][15] = parseFloat((scores[i][14] / maxaveragescore * 140).toFixed(1));
+    scores[i][title.length-4] = parseFloat((scores[i][title.length-5] / maxaveragescore * 140).toFixed(1));
   }, this);
 }
 
@@ -198,7 +198,7 @@ function jiafenxiangStatistic() {
     if(jiafenxiangtotal > 10){
       jiafenxiangtotal = 10;
     }
-    scores[i][16] = jiafenxiangtotal;
+    scores[i][title.length-3] = jiafenxiangtotal;
     jiafenxiangscores[i][0] = jiafenxiangtotal;
     jiafenxiangscores[i][1] = jiafenxiangmingxi;
     jiafenxiangtotal = 0;
@@ -209,15 +209,15 @@ function jiafenxiangStatistic() {
 function ResultStatistic() {
   //计算总-拉开分差。
   scores.forEach(function (everyonescore, i) {
-    scores[i][17] = parseFloat((scores[i][15] + scores[i][16]).toFixed(1));
-    if (scores[i][17] > maxzonglakaifencha) {
-      maxzonglakaifencha = scores[i][17];
+    scores[i][title.length-2] = parseFloat((scores[i][title.length-4] + scores[i][title.length-3]).toFixed(1));
+    if (scores[i][title.length-2] > maxzonglakaifencha) {
+      maxzonglakaifencha = scores[i][title.length-2];
     }
   }, this);
 
   //计算最终分。
   scores.forEach(function (everyonescore, i) {
-    scores[i][18] = parseFloat((scores[i][17] / maxzonglakaifencha * 120).toFixed(1));
+    scores[i][title.length-1] = parseFloat((scores[i][title.length-2] / maxzonglakaifencha * 120).toFixed(1));
   }, this);
 
   maxaveragescore = 0;
