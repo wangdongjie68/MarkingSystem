@@ -36,6 +36,11 @@ router.get('/sethaha.html', function (req, res, next) {
   res.render('sethaha');
 });
 
+/* GET regulation page. */
+router.get('/regulation.html', function (req, res, next) {
+  res.render('regulation');
+});
+
 /* POST setting page. */
 router.post('/sethaha.html', function (req, res, next) {
   isneedshowresult = req.body.isneedshowresult;
