@@ -39,6 +39,8 @@
  <script>
      window.onload = function () {
           var submitter = document.getElementById('submitter');
+          var name = window.localStorage.getItem("submitter");
+          submitter.value = name;
           var index = submitter.selectedIndex;
           if(index > 0){
               selectchange(index);
@@ -47,6 +49,9 @@
      function selectchange(index){
          var submitbutton = document.getElementById("submitbutton");
          submitbutton.removeAttribute("disabled");
+         var submitter = document.getElementById('submitter');
+         var name = submitter.value;
+         window.localStorage.setItem("submitter",name);
      }
 </script>
 </head>

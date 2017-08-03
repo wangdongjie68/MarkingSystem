@@ -10,13 +10,13 @@ var submitters = new Array;
 var jiafenxiangdir = new Array;
 var jiafenxiangscores = new Array;
 
-var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞','邓壮','黄腾霄','余冬','郑旭','胡承'];
-var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '许威', '叶洪', '张强', '朱龙飞','邓壮','黄腾霄','余冬','郑旭','胡承', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
+var users = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '叶洪', '张强', '朱龙飞','邓壮','余冬','郑旭','胡承','黄腾霄','丁琛','林德熙','刘俊杰','娄娜', '许威','佘翰笙','牛彦杰'];
+var title = ['陈博', '陈民敬', '陈天龙', '程遥', '邓启亮', '付金祥', '李幸斌', '吕毅', '王东杰', '叶洪', '张强', '朱龙飞','邓壮','余冬','郑旭','胡承','黄腾霄','丁琛','林德熙','刘俊杰','娄娜', '许威','佘翰笙','牛彦杰', '总分', '平均分', '拉开差', '额外加分', '总-拉开差', '最终分'];
 
 var jiafenmingxititle = ['姓名', '额外加分项总分', '额外加分项明细'];
 var markingtitle = ['姓名', '工作项评分', '专利（东杰）', '小零识（天龙）', '导师', '定制版', '招聘', '内推', '培训', '活动', '特殊加分'];
 var markingtitlesen = ['xingming', 'gongzuoxiang', 'zhuanli', 'xiaolingshi', 'daoshi', 'dingzhiban', 'zhaopin', 'neitui', 'peixun', 'huodong', 'teshujiafen'];
-var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'lixingbin', 'lvyi', 'wangdongjie', 'xuwei', 'yehong', 'zhangqiang', 'zhulongfei','dengzhuang','huangtengxiao','yudong','zhengxu','hucheng'];
+var usersen = ['chenbo', 'chenminjing', 'chentianlong', 'chengyao', 'dengqiliang', 'fujinxiang', 'lixingbin', 'lvyi', 'wangdongjie', 'yehong', 'zhangqiang', 'zhulongfei','dengzhuang','yudong','zhengxu','hucheng','huangtengxiao','dingchen','lindexi','liujunjie','louna','xuwei','yuhansheng','niuyanjie'];
 
 initdata();
 
